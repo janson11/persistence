@@ -1,5 +1,6 @@
 package com.janson.config;
 
+import com.janson.io.Resources;
 import com.janson.pojo.Configuration;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.dom4j.Document;
@@ -48,7 +49,14 @@ public class XMLConfigBuilder {
 
         configuration.setDataSource(comboPooledDataSource);
 
-        // mapper.xml 解析
+        // mapper.xml 解析:拿到路径——字节输入流——dom4j进行解析
+        List<Element> mapperList = rootElement.selectNodes("//mapper");
+        for (Element element : mapperList) {
+            String mapperPath = element.attributeValue("resource");
+            InputStream resourceStream = Resources.getResourceStream(mapperPath);
+            XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(configuration);
+            xmlMapperBuilder.parse(resourceStream);
+        }
 
         return configuration;
     }
