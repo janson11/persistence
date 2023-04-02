@@ -6,4 +6,7 @@ package com.janson.sqlSession;
  * @Date: 2023/4/1 17:04
  **/
 public interface SqlSessionFactory {
+
+    public SqlSession openSession();
+
 }
