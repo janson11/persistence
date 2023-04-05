@@ -59,15 +59,15 @@ public class SimpleExecutor implements Executor {
         ResultSet resultSet = preparedStatement.executeQuery();
         String resultType = mappedStatement.getResultType();
         Class<?> resultTypeClass = getClassType(resultType);
-        Object o = resultTypeClass.newInstance();
         ArrayList<Object> objects = new ArrayList<Object>();
 
         // 6、封装返回结果集
 
         while (resultSet.next()) {
+            Object o = resultTypeClass.newInstance();
             // 取出元数据
             ResultSetMetaData metaData = resultSet.getMetaData();
-            for (int i = 1; i <= metaData.getColumnCount() ; i++) {
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
                 // 字段名
                 String columnName = metaData.getColumnName(i);
                 // 字段值
@@ -75,10 +75,10 @@ public class SimpleExecutor implements Executor {
                 // 使用反射或者内省，根据数据库表和实体的对应关系，完成封装。
                 PropertyDescriptor propertyDescriptor = new PropertyDescriptor(columnName, resultTypeClass);
                 Method writeMethod = propertyDescriptor.getWriteMethod();
-                writeMethod.invoke(o,value);
+                writeMethod.invoke(o, value);
             }
+            objects.add(o);
         }
-        objects.add(o);
         return (List<E>) objects;
     }
 

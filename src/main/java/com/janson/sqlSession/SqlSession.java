@@ -17,5 +17,5 @@ public interface SqlSession {
     /**
      * 根据条件查询单个
      */
-    public <T> T selectOne(String statementId,Object... params);
+    public <T> T selectOne(String statementId,Object... params) throws Exception;
 }

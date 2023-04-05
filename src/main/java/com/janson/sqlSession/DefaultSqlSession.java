@@ -24,13 +24,13 @@ public class DefaultSqlSession implements SqlSession {
         SimpleExecutor simpleExecutor = new SimpleExecutor();
         MappedStatement mappedStatement = configuration.getMappedStatementMap().get(statementId);
 
-        simpleExecutor.query(configuration, mappedStatement, params);
+        List<E> query = simpleExecutor.query(configuration, mappedStatement, params);
 
-        return null;
+        return query;
     }
 
     @Override
-    public <T> T selectOne(String statementId, Object... params) {
+    public <T> T selectOne(String statementId, Object... params) throws Exception {
         List<Object> objects = selectList(statementId, params);
         if (objects.size() == 1) {
             return (T) objects.get(0);
